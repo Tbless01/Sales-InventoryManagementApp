@@ -3,6 +3,7 @@ package com.tbless.inventoryManagementApp.data.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -25,6 +26,9 @@ public class User {
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Roles> userRoles;
-    @Enumerated(EnumType.STRING)
-    private GenderType genderType;
+//    @Enumerated(EnumType.STRING)
+//    private GenderType genderType;
+    private String genderType;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<DebitCardDetails> debitCardDetails;
 }

@@ -26,7 +26,7 @@ class EmailVerificationServiceImplTest {
     void testThatEmailCanBeVerified() throws UserRegistrationException {
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("PAUL");
-        registrationRequest.setGender("MALE");
+        registrationRequest.setGenderType("MALE");
         registrationRequest.setEmailAddress("Tayo@gmail.com");
         registrationRequest.setPassword("password");
 

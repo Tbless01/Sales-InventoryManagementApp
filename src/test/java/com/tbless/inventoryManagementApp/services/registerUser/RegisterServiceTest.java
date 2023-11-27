@@ -3,6 +3,7 @@ package com.tbless.inventoryManagementApp.services.registerUser;
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
 import com.tbless.inventoryManagementApp.dtos.response.UserResponse;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
+import com.tbless.inventoryManagementApp.services.authentication.LoginService;
 import com.tbless.inventoryManagementApp.services.authentication.RegisterService;
 import com.tbless.inventoryManagementApp.services.user.UserService;
 import com.tbless.inventoryManagementApp.utils.ApiResponse;
@@ -26,6 +27,8 @@ public class RegisterServiceTest {
     private UserService userService;
     @Autowired
     private RegisterService registerService;
+    @Autowired
+    private LoginService loginService;
     private ApiResponse apiResponse;
 
 
@@ -37,7 +40,7 @@ public class RegisterServiceTest {
         registrationRequest.setFirstName("John");
         registrationRequest.setLastName("Doe");
         registrationRequest.setPassword("password");
-        registrationRequest.setGender("MALE");
+        registrationRequest.setGenderType("MALE");
         apiResponse = registerService.register(registrationRequest);
     }
 
@@ -53,7 +56,7 @@ public class RegisterServiceTest {
         registrationRequest2.setFirstName("Doe");
         registrationRequest2.setLastName("John");
         registrationRequest2.setPassword("password");
-        registrationRequest2.setGender("FEMALE");
+        registrationRequest2.setGenderType("FEMALE");
         registerService.register(registrationRequest2);
         List<UserResponse> users = userService.getAllUsers();
         assertThat(users.size()).isEqualTo(2);

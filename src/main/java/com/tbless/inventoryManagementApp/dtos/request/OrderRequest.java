@@ -1,10 +1,9 @@
 package com.tbless.inventoryManagementApp.dtos.request;
 
 import com.tbless.inventoryManagementApp.data.models.Product;
-import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Builder
 @AllArgsConstructor
@@ -13,12 +12,14 @@ import java.time.LocalDateTime;
 @Setter
 public class OrderRequest {
 
+    private Long id;
     private String customerName;
     private String emailAddress;
     private String phoneNumber;
-    private String orderId;
-    @ManyToOne
+    private String uniqueId;
     private Product product;
     private int orderQuantity;
-    private LocalDateTime dateOrdered;
+    private BigDecimal totalAmount;
+    private String dateOrdered;
+    private boolean isPaid;
 }

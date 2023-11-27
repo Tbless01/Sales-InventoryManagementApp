@@ -26,4 +26,7 @@ public class TokenServiceImpl implements TokenService{
     public Optional<Token> findTokenByJwt(String jwt) {
         return tokenRepository.findTokenByJwt(jwt);
     }
+    public void deleteExpiredAndRevokedTokens() {
+        tokenRepository.deleteExpiredAndRevokedTokens();
+    }
 }

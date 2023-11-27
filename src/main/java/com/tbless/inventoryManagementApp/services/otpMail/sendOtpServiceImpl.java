@@ -43,7 +43,7 @@ public class sendOtpServiceImpl implements SendOtpService {
             simpleMailMessage.setTo(emailAddress);
             simpleMailMessage.setSubject(GenerateApiResponse.VERIFY_YOUR_ITS_YOU);
             simpleMailMessage.setText(verificationToken.getToken());
-            System.out.println("I got here");
+            System.out.println("I got here actually");
             mailSender.send(simpleMailMessage);
 
             return ApiResponse.builder()

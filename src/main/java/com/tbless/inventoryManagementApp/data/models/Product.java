@@ -16,6 +16,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String emailAddress;
     private String name;
     private BigDecimal price;
     private int stock;

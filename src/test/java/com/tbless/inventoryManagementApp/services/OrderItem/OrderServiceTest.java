@@ -31,42 +31,54 @@ public class OrderServiceTest {
     private ProductService productService;
 
     @Test
-    void testThatAUserCanPlaceAnOrder() throws UserRegistrationException, ProductAlreadyExistsException, ProductNotFoundException, UserNotFoundException, InsufficientStockException {
+    void testThatAUserCanPlaceAnOrder() throws UserRegistrationException, ProductNotFoundException, UserNotFoundException, InsufficientStockException {
         userService.deleteAll();
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("Paul");
         registrationRequest.setLastName("Moses");
-        registrationRequest.setGender("MALE");
+        registrationRequest.setGenderType("MALE");
         registrationRequest.setEmailAddress("Tayo@gmail.com");
         registrationRequest.setPassword("password");
 
         var registrationResponse = registerService.register(registrationRequest);
 
+        RegistrationRequest registrationRequestBuyer = new RegistrationRequest();
+        registrationRequestBuyer.setFirstName("Prof");
+        registrationRequestBuyer.setLastName("Ola");
+        registrationRequestBuyer.setGenderType("MALE");
+        registrationRequestBuyer.setEmailAddress("profBaba@gmail.com");
+        registrationRequestBuyer.setPassword("password");
+
+        var registrationResponseBuyer = registerService.register(registrationRequestBuyer);
         ProductRequest productRequest = new ProductRequest();
+        productRequest.setEmailAddress(registrationRequest.getEmailAddress());
         productRequest.setName("Male Shoe");
         productRequest.setPrice(BigDecimal.valueOf(20_000));
-        productRequest.setStock(3);
+        productRequest.setStock(9);
         productRequest.setDescription("Sneakers");
 
-        ProductCreatedResponse productCreatedResponse = productService.createProduct(productRequest);
+        ProductCreatedResponse productCreatedResponse = productService.createProduct( productRequest);
 
 
         OrderRequest orderRequest = new OrderRequest();
         var availableProduct= productService.findProductByName("Male Shoe");
+        orderRequest.setEmailAddress(registrationRequestBuyer.getEmailAddress());
         orderRequest.setProduct(availableProduct);
-        orderRequest.setOrderQuantity(6);
+        orderRequest.setOrderQuantity(4);
 
-        var orderPlaced=orderService.placeOrder("Tayo@gmail.com", orderRequest);
+        var orderPlaced=orderService.placeOrder(orderRequest.getEmailAddress(), orderRequest);
 
         System.out.println(orderPlaced.getProduct().getPrice());
-        System.out.println(orderPlaced.getOrderId());
-        System.out.println(orderPlaced.getCustomerName());
+        System.out.println(orderPlaced.getUniqueId());
+        System.out.println("Customer's name "+orderPlaced.getCustomerName());
         System.out.println(orderPlaced.getDate());
-        System.out.println("My Id " + orderPlaced.getOrderId());
+        System.out.println("My Id " + orderPlaced.getUniqueId());
         System.out.println(orderPlaced.getProduct().getName());
+        System.out.println("Owner of Product gmail "+ orderPlaced.getProduct().getEmailAddress());
             System.out.println(orderRequest.getOrderQuantity());
         System.out.println(orderPlaced.getProduct().getDescription());
         System.out.println(orderPlaced.getProduct().toString());
+        System.out.println("Remaining product in stock "+ orderPlaced.getProduct().getStock());
         System.out.println();
 
         assertThat(orderPlaced).isNotNull();

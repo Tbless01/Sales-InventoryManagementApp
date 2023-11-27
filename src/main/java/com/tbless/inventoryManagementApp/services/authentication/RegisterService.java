@@ -1,6 +1,5 @@
 package com.tbless.inventoryManagementApp.services.authentication;
 
-import com.tbless.inventoryManagementApp.data.models.GenderType;
 import com.tbless.inventoryManagementApp.data.models.Roles;
 import com.tbless.inventoryManagementApp.data.models.User;
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
@@ -33,7 +32,7 @@ public class RegisterService {
 
         public ApiResponse register(RegistrationRequest registrationRequest) throws UserRegistrationException {
         boolean isRegisteredUser = userService.findUserByEmailAddress(registrationRequest.getEmailAddress()) != null;
-        if (isRegisteredUser) {throw new UserRegistrationException("User Already exist");}
+        if (isRegisteredUser) {throw new UserRegistrationException("User already exists");}
         else {
             User savedUser = buildUser(registrationRequest);
             System.out.println(savedUser.toString());
@@ -50,8 +49,9 @@ public class RegisterService {
                 .emailAddress(registrationRequest.getEmailAddress())
                 .firstName(registrationRequest.getFirstName())
                 .lastName(registrationRequest.getLastName())
+                .phoneNumber(registrationRequest.getPhoneNumber())
                 .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                .genderType(GenderType.valueOf(registrationRequest.getGender()))
+                .genderType(registrationRequest.getGenderType())
                 .userRoles(userRoles)
                 .build();
         return userService.save(user);

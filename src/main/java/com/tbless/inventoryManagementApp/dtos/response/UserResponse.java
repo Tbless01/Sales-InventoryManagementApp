@@ -19,5 +19,5 @@ public class UserResponse {
         private String lastName;
         private String phoneNumber;
         private Set<Roles> userRoles;
-        private GenderType genderType;
+        private String genderType;
 }

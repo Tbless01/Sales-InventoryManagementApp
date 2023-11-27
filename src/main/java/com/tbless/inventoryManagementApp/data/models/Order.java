@@ -3,7 +3,7 @@ package com.tbless.inventoryManagementApp.data.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
 @Builder
@@ -19,8 +19,11 @@ public class Order {
     private String customerName;
     private String emailAddress;
     private String phoneNumber;
-    private String orderId;
+    private String uniqueId;
     @ManyToOne
     private Product product;
-    private LocalDateTime dateOrdered;
+    private int orderQuantity;
+    private BigDecimal totalAmount;
+    private String dateOrdered;
+    private boolean isPaid;
 }

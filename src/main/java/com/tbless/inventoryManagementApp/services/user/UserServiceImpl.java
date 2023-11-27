@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    //    private final UserService userService;
+//    private final UserService userService;
 //    private final JwtService jwtService;
 //    public final UserDetailsService userDetailsService;
 //    private final PasswordEncoder passwordEncoder;
@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
                 .map(UserServiceImpl::buildUserResponse)
                 .toList();
     }
+
     private static UserResponse buildUserResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -53,12 +54,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAll() {
         userRepository.deleteAll();
-
     }
-
-
-
-
 
 
 
@@ -135,4 +131,5 @@ public class UserServiceImpl implements UserService {
 //        Optional<User> foundUser = userRepository.findUserByEmailAddressIgnoreCase(emailAddress);
 //        return foundUser.isPresent();
 //    }
+
 }

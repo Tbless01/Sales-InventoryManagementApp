@@ -10,4 +10,6 @@ public interface TokenService {
     Optional<Token> findTokenByUserEmailAddress(String emailAddress);
 
     Optional<Token> findTokenByJwt(String jwt);
+    void deleteExpiredAndRevokedTokens();
+
 }
