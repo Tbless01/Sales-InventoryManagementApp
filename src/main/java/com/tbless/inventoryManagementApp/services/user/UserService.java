@@ -5,7 +5,9 @@ import com.tbless.inventoryManagementApp.dtos.response.UserResponse;
 import com.tbless.inventoryManagementApp.exceptions.UserNotFoundException;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
 import com.tbless.inventoryManagementApp.utils.ApiResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {

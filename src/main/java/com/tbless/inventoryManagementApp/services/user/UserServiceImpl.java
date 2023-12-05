@@ -3,11 +3,8 @@ package com.tbless.inventoryManagementApp.services.user;
 import com.tbless.inventoryManagementApp.data.models.User;
 import com.tbless.inventoryManagementApp.data.repository.UserRepository;
 import com.tbless.inventoryManagementApp.dtos.response.UserResponse;
-import com.tbless.inventoryManagementApp.security.JwtService;
-import com.tbless.inventoryManagementApp.services.authentication.RegisterService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+
+
 //    private final UserService userService;
 //    private final JwtService jwtService;
 //    public final UserDetailsService userDetailsService;
@@ -55,8 +54,6 @@ public class UserServiceImpl implements UserService {
     public void deleteAll() {
         userRepository.deleteAll();
     }
-
-
 
 
 

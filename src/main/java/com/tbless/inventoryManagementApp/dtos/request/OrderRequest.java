@@ -1,5 +1,6 @@
 package com.tbless.inventoryManagementApp.dtos.request;
 
+import com.tbless.inventoryManagementApp.data.models.PaymentStatus;
 import com.tbless.inventoryManagementApp.data.models.Product;
 import lombok.*;
 
@@ -21,5 +22,5 @@ public class OrderRequest {
     private int orderQuantity;
     private BigDecimal totalAmount;
     private String dateOrdered;
-    private boolean isPaid;
+    private PaymentStatus paymentStatus;
 }

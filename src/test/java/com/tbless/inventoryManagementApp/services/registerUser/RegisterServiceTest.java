@@ -2,6 +2,7 @@ package com.tbless.inventoryManagementApp.services.registerUser;
 
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
 import com.tbless.inventoryManagementApp.dtos.response.UserResponse;
+import com.tbless.inventoryManagementApp.exceptions.BadNetworkException;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
 import com.tbless.inventoryManagementApp.services.authentication.LoginService;
 import com.tbless.inventoryManagementApp.services.authentication.RegisterService;
@@ -33,7 +34,7 @@ public class RegisterServiceTest {
 
 
     @BeforeEach
-    public void testRegister() throws UserRegistrationException {
+    public void testRegister() throws UserRegistrationException, BadNetworkException {
         userService.deleteAll();
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setEmailAddress("test@example.com");
@@ -50,7 +51,7 @@ public class RegisterServiceTest {
     }
 
     @Test
-    public void getAllCustomersTest() throws UserRegistrationException {
+    public void getAllCustomersTest() throws UserRegistrationException, BadNetworkException {
         RegistrationRequest registrationRequest2 = new RegistrationRequest();
         registrationRequest2.setEmailAddress("test2@example.com");
         registrationRequest2.setFirstName("Doe");

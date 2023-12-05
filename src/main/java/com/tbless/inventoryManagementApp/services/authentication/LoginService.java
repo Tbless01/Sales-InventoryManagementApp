@@ -2,10 +2,13 @@ package com.tbless.inventoryManagementApp.services.authentication;
 
 
 import com.tbless.inventoryManagementApp.data.models.Token;
+import com.tbless.inventoryManagementApp.data.models.User;
 import com.tbless.inventoryManagementApp.dtos.request.LoginRequest;
 import com.tbless.inventoryManagementApp.exceptions.UserLoginException;
 import com.tbless.inventoryManagementApp.security.JwtService;
 import com.tbless.inventoryManagementApp.services.token.TokenService;
+import com.tbless.inventoryManagementApp.services.user.UserService;
+import com.tbless.inventoryManagementApp.services.user.UserServiceImpl;
 import com.tbless.inventoryManagementApp.utils.ApiResponse;
 import com.tbless.inventoryManagementApp.utils.GenerateApiResponse;
 import lombok.AllArgsConstructor;
@@ -23,10 +26,13 @@ public class LoginService {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final TokenService tokenService;
+    private final UserService userService;
 
     public ApiResponse login(LoginRequest loginRequest) throws UserLoginException {
         authenticateUser(loginRequest);
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmailAddress());
+        var foundUser = userService.findUserByEmailAddress(loginRequest.getEmailAddress());
+        if (!foundUser.isEnabled()) throw new UserLoginException("Check your email to verify your account");
         if(userDetails==null) throw new UserLoginException(GenerateApiResponse.INVALID_CREDENTIALS);
         String jwt = jwtService.generateToken(userDetails);
         revokeAllUserToken(loginRequest.getEmailAddress());

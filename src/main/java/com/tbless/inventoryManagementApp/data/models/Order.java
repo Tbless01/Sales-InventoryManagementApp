@@ -25,5 +25,5 @@ public class Order {
     private int orderQuantity;
     private BigDecimal totalAmount;
     private String dateOrdered;
-    private boolean isPaid;
+    private PaymentStatus paymentStatus;
 }

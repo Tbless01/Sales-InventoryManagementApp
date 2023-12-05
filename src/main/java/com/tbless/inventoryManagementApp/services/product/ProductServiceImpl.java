@@ -2,12 +2,14 @@ package com.tbless.inventoryManagementApp.services.product;
 
 import com.tbless.inventoryManagementApp.data.models.Product;
 import com.tbless.inventoryManagementApp.data.repository.ProductRepository;
+import com.tbless.inventoryManagementApp.dtos.request.ProductImageRequest;
 import com.tbless.inventoryManagementApp.dtos.request.ProductRequest;
 import com.tbless.inventoryManagementApp.dtos.request.ProductUpdateRequest;
 import com.tbless.inventoryManagementApp.dtos.response.DeleteResponse;
 import com.tbless.inventoryManagementApp.dtos.response.ProductCreatedResponse;
 import com.tbless.inventoryManagementApp.dtos.response.ProductResponse;
 import com.tbless.inventoryManagementApp.exceptions.ProductNotFoundException;
+import com.tbless.inventoryManagementApp.exceptions.SizeOfProductImageExceededException;
 import com.tbless.inventoryManagementApp.exceptions.UserNotFoundException;
 import com.tbless.inventoryManagementApp.services.user.UserService;
 import lombok.AllArgsConstructor;
@@ -54,6 +56,19 @@ public class ProductServiceImpl implements ProductService {
         return buildProductResponse(product);
     }
 
+    @Override
+    public String uploadProductImage(Long productId, ProductImageRequest productImageRequest) throws ProductNotFoundException, SizeOfProductImageExceededException {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
+        if (product.getImageUrl().size() >= 20) throw new SizeOfProductImageExceededException(PRODUCT_IMAGE_SIZE_EXCEEDED);
+        List<String> imageUrls = product.getImageUrl();
+        imageUrls.add(productImageRequest.getImageUrl());
+        product.setImageUrl(imageUrls);
+        productRepository.save(product);
+        return productImageRequest.getImageUrl();
+    }
+
+
     private void checkProductExistsWithId(Long id) throws ProductNotFoundException {
         try {
             var foundUser = getProductById(id);
@@ -76,6 +91,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductServiceImpl::buildProductResponse)
                 .toList();
     }
+
     public List<ProductResponse> getAllAvailableProductsExceptOwnerProduct(String emailAddress) {
         List<Product> products = productRepository.findAll();
         return products.stream()
@@ -104,6 +120,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public DeleteResponse autoDeleteWhenProductIsZero(Long id) {
+        Optional<Product> productFound = productRepository.findById(id);
+        if (productFound.get().getStock() == 0) productRepository.deleteById(id);
+        DeleteResponse deleteResponse = new DeleteResponse();
+        deleteResponse.setMessage(PRODUCT_DELETED_SUCCESSFULLY);
+        deleteResponse.setId(id);
+        return deleteResponse;
+    }
+
+    @Override
     public void deleteAll() {
         productRepository.deleteAll();
     }
@@ -112,6 +138,7 @@ public class ProductServiceImpl implements ProductService {
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
+                .imageUrl(product.getImageUrl())
                 .description(product.getDescription())
                 .stock(product.getStock())
                 .price(product.getPrice())

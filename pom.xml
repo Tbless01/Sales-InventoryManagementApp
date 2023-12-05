@@ -94,7 +94,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-
+		</dependency>
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.32.2</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -112,6 +116,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>sales-inventory-management-app</finalName>
 	</build>
 
 </project>

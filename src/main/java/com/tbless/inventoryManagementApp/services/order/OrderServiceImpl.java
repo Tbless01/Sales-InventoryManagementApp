@@ -1,10 +1,6 @@
 package com.tbless.inventoryManagementApp.services.order;
 
-import com.tbless.inventoryManagementApp.data.models.DebitCardDetails;
-import com.tbless.inventoryManagementApp.data.models.Order;
-import com.tbless.inventoryManagementApp.data.models.Product;
-import com.tbless.inventoryManagementApp.data.models.User;
-import com.tbless.inventoryManagementApp.data.models.payStack.PaystackApiClient;
+import com.tbless.inventoryManagementApp.data.models.*;
 import com.tbless.inventoryManagementApp.data.repository.OrderRepository;
 import com.tbless.inventoryManagementApp.dtos.request.AddCardDetailsRequest;
 import com.tbless.inventoryManagementApp.dtos.request.MakePaymentRequest;
@@ -36,14 +32,13 @@ import static com.tbless.inventoryManagementApp.utils.ResponseUtils.ORDER_NOT_FO
 
 @Service
 @AllArgsConstructor
-public class OrderServiceImpl implements OrderService {
+public class    OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final ProductService productService;
     private final ModelMapper modelMapper;
     private final DebitCardService debitCardService;
-    private final PaystackApiClient paystackApiClient;
-
+//    private final PaystackApiClient paystackApiClient;
 
     @Override
     public OrderResponse placeOrder(String emailAddress, OrderRequest orderRequest) throws ProductNotFoundException, InsufficientStockException, UserNotFoundException {
@@ -67,23 +62,19 @@ public class OrderServiceImpl implements OrderService {
             orderRequest.setDateOrdered(LocalDateTime.now().format(DateTimeFormatter.ofPattern("E dd-MM-yyyy hh:mm:ss a")));
             orderRequest.setPhoneNumber(userFound.getPhoneNumber());
             orderRequest.setTotalAmount(product.getPrice().multiply(new BigDecimal(orderRequest.getOrderQuantity())));
-            orderRequest.setPaid(false);
+            orderRequest.setPaymentStatus(PaymentStatus.UNPAID);
 
             order = modelMapper.map(orderRequest, Order.class);
             order.setUniqueId(generateOrderingId(order));
+            System.out.println("Payment status "+ order.getPaymentStatus());
             System.out.println(order.getUniqueId());
             orderRequest.setUniqueId(order.getUniqueId());
             System.out.println("my Id " + order.getUniqueId());
 //            orderRequest.getProduct().setStock(product.getStock() - orderRequest.getOrderQuantity());
             product.setStock((product.getStock() - orderRequest.getOrderQuantity()));
             Product productToMap = modelMapper.map(product, Product.class);
-//                          if (productToMap.getStock() == 0) productService.deleteProduct(product.getId());
             ProductUpdateRequest productUpdateRequest = modelMapper.map(productToMap, ProductUpdateRequest.class);
             productService.updateProduct(product.getId(), productUpdateRequest);
-//            orderRequest.getProduct().setPrice(product.getPrice().multiply(new BigDecimal(orderRequest.getOrderQuantity())));
-//            order.getProduct().setPrice(product.getPrice().multiply(new BigDecimal(orderRequest.getOrderQuantity())));
-//            order.setPaid(false);
-
             orderRepository.save(order);
         }
         return order;
@@ -114,27 +105,38 @@ public class OrderServiceImpl implements OrderService {
         return buildOwnerProductOrderResponse(order);
     }
 
+
     @Override
     public MakePaymentResponse makePayment(String uniqueId, MakePaymentRequest paymentRequest) throws PaystackApiException {
-        Optional<Order> foundOrder = orderRepository.findOrderByUniqueId(uniqueId);
-        DebitCardDetails foundDebitCard = debitCardService.findByUserEmailAddress(foundOrder.get().getEmailAddress());
+//        Optional<Order> foundOrder = orderRepository.findOrderByUniqueId(uniqueId);
+//        DebitCardDetails foundDebitCard = debitCardService.findByUserEmailAddress(foundOrder.get().getEmailAddress());
+//
+////        MakePaymentRequest paymentRequest = new MakePaymentRequest();
+////        paymentRequest.setOrderId(foundOrder.get().getOrderId());
+//        paymentRequest.setCreditCardNumber(foundDebitCard.getDebitCardNumber());
+//        paymentRequest.setExpiringMonth(foundDebitCard.getExpiringMonth());
+//        paymentRequest.setExpiringYear(foundDebitCard.getExpiringYear());
+//        paymentRequest.setCvv(foundDebitCard.getCvv());
+//        paymentRequest.setEmail(foundOrder.get().getEmailAddress());
+//        paymentRequest.setEmailAddress(foundOrder.get().getEmailAddress());
+//        System.out.println("Date Inside make payment "+foundOrder.get().getDateOrdered());
+//        System.out.println("Quantity Under make payment "+ foundOrder.get().getOrderQuantity());
+//        System.out.println("UniqueId under make payment " + foundOrder.get().getUniqueId());
+////        paymentRequest.setAmount(makePaymentRequest.getAmount());
+//        foundOrder.get().setPaid(true);
+//        orderRepository.save(foundOrder.get());
+//        paymentRequest.setAmount(foundOrder.get().getTotalAmount());
+//        return paystackApiClient.chargeCard(paymentRequest);
+        return null;
+    }
 
-//        MakePaymentRequest paymentRequest = new MakePaymentRequest();
-//        paymentRequest.setOrderId(foundOrder.get().getOrderId());
-        paymentRequest.setCreditCardNumber(foundDebitCard.getDebitCardNumber());
-        paymentRequest.setExpiringMonth(foundDebitCard.getExpiringMonth());
-        paymentRequest.setExpiringYear(foundDebitCard.getExpiringYear());
-        paymentRequest.setCvv(foundDebitCard.getCvv());
-        paymentRequest.setEmail(foundOrder.get().getEmailAddress());
-        paymentRequest.setEmailAddress(foundOrder.get().getEmailAddress());
-        System.out.println("Date Inside make payment "+foundOrder.get().getDateOrdered());
-        System.out.println("Quantity Under make payment "+ foundOrder.get().getOrderQuantity());
-        System.out.println("UniqueId under make payment " + foundOrder.get().getUniqueId());
-//        paymentRequest.setAmount(makePaymentRequest.getAmount());
-        foundOrder.get().setPaid(true);
-        orderRepository.save(foundOrder.get());
-        paymentRequest.setAmount(foundOrder.get().getTotalAmount());
-        return paystackApiClient.chargeCard(paymentRequest);
+    @Override
+    public void makeOrderPayment(String uniqueId) {
+        Optional<Order> foundOrder = orderRepository.findOrderByUniqueId(uniqueId);
+        if (foundOrder.isPresent()) {
+            foundOrder.get().setPaymentStatus(PaymentStatus.SHIPPING);
+            orderRepository.save(foundOrder.get());
+        }
     }
 
 //    @Override

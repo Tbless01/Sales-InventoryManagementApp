@@ -36,7 +36,7 @@ public interface OrderService {
     //        return paystackApiClient.chargeCard(paymentRequest);
     //    }
     MakePaymentResponse makePayment(String uniqueId, MakePaymentRequest makePaymentRequest) throws PaystackApiException, OrderNotFoundException;
-
+    void makeOrderPayment(String uniqueId);
     AddCardDetailsResponse addDebitCard(String emailAddress, AddCardDetailsRequest addCardDetailsRequest) throws AddDebitCardException;
 
     DebitCardDetails getExistingCardByEmail(String emailAddress) throws NoDebitCarFoundException;

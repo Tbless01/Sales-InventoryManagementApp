@@ -19,8 +19,6 @@ public class UserOrderRequest {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-
-    
     private Set<Roles> roles;
     private GenderType genderType;
 }

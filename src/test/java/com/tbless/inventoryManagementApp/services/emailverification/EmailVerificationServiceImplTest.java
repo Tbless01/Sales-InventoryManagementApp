@@ -1,6 +1,7 @@
 package com.tbless.inventoryManagementApp.services.emailverification;
 
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
+import com.tbless.inventoryManagementApp.exceptions.BadNetworkException;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
 import com.tbless.inventoryManagementApp.services.authentication.RegisterService;
 import com.tbless.inventoryManagementApp.services.user.UserService;
@@ -23,7 +24,7 @@ class EmailVerificationServiceImplTest {
     private RegisterService registerService;
 
     @Test
-    void testThatEmailCanBeVerified() throws UserRegistrationException {
+    void testThatEmailCanBeVerified() throws UserRegistrationException, BadNetworkException {
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationRequest.setFirstName("PAUL");
         registrationRequest.setGenderType("MALE");

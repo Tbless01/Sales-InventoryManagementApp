@@ -31,4 +31,5 @@ public class User {
     private String genderType;
     @OneToMany(fetch = FetchType.EAGER)
     private List<DebitCardDetails> debitCardDetails;
+    private boolean isEnabled = false;
 }

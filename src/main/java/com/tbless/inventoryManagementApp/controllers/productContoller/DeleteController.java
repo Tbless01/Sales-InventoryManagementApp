@@ -19,4 +19,9 @@ public class DeleteController {
         var deleteResponse = productService.deleteProduct(id);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
     }
+    @DeleteMapping("deleteWhenZero/{productId}")
+    public ResponseEntity<DeleteResponse> deleteProductWhenZero(@PathVariable Long productId) {
+        var deleteResponse = productService.autoDeleteWhenProductIsZero(productId);
+        return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
+    }
 }

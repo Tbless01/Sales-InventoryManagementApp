@@ -1,10 +1,6 @@
 package com.tbless.inventoryManagementApp.controllers.productContoller;
-//
-//public class ProductUpdateController {
-//
-//}
-// ProductController.java
 
+import com.tbless.inventoryManagementApp.dtos.request.ProductImageRequest;
 import com.tbless.inventoryManagementApp.dtos.request.ProductUpdateRequest;
 import com.tbless.inventoryManagementApp.dtos.response.ProductResponse;
 import com.tbless.inventoryManagementApp.exceptions.ProductNotFoundException;
@@ -25,6 +21,18 @@ public class ProductUpdateController {
     @PutMapping("update/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequest updatedProduct) throws UserNotFoundException, ProductNotFoundException {
         ProductResponse savedProduct = productService.updateProduct(productId, updatedProduct);
-        return new  ResponseEntity<>(savedProduct, HttpStatus.OK);
+        return new ResponseEntity<>(savedProduct, HttpStatus.OK);
+    }
+
+    @PutMapping("/upload-image/{productId}")
+    public ResponseEntity<String> uploadProductImage(@PathVariable Long productId, @RequestBody ProductImageRequest productImageRequest) {
+        try {
+            String image = productService.uploadProductImage(productId, productImageRequest);
+            return ResponseEntity.ok(image);
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 }

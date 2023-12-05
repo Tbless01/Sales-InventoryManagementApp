@@ -1,14 +1,11 @@
 package com.tbless.inventoryManagementApp.config;
 
-import com.tbless.inventoryManagementApp.data.models.payStack.PayStackConfiguration;
-import com.tbless.inventoryManagementApp.data.models.payStack.PaystackApiClient;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
 
@@ -51,14 +48,14 @@ public class BeanConfig {
     }
 
 
-    @Bean
-    public PaystackApiClient paystackApiClient(RestTemplate restTemplate, PayStackConfiguration paystackConfiguration) {
-        return new PaystackApiClient(restTemplate, paystackConfiguration);
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+//    @Bean
+//    public PaystackApiClient paystackApiClient(RestTemplate restTemplate, PayStackConfiguration paystackConfiguration) {
+//        return new PaystackApiClient(restTemplate, paystackConfiguration);
+//    }
+//
+//    @Bean
+//    public RestTemplate restTemplate() {
+//        return new RestTemplate();
+//    }
 
 }

@@ -10,5 +10,4 @@ public interface TokenVerificationService {
     Optional<VerificationToken> findVerificationTokenByToken(String token);
 
     String generateVerificationToken(int length);
-
 }
