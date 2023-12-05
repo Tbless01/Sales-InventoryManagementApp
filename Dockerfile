@@ -7,4 +7,4 @@ FROM openjdk:17-jdk-alpine
 EXPOSE 8080
 #ADD target/sales-inventory-management-app.jar sales-inventory-management-app.jar
 COPY --from=build /target/sales-inventory-management-app.jar sales-inventory-management-app.jar
-ENTRYPOINT ["java", "jar", "/sales-inventory-management-app.jar"]
+ENTRYPOINT ["java", "-jar", "/sales-inventory-management-app.jar"]
