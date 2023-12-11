@@ -65,7 +65,6 @@ public class RegisterController {
             modelAndView.setViewName("verification-failed");
             modelAndView.addObject("errorMessage", "User verification failed. Please try again.");
         }
-
         return modelAndView;
     }
 }

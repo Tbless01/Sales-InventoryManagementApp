@@ -175,8 +175,9 @@ public class RegisterService {
     private void sendVerificationEmail(String emailAddress, String verificationToken) {
         // Construct a nice email message with the verification link
         var user =userService.findUserByEmailAddress(emailAddress);
-        String verificationLink = "http://localhost:8080/api/v1/register/verify?token=" + verificationToken;
-        String loginRedirectLink = "http://localhost:3000/Login";
+//        String verificationLink = "http://localhost:8080/api/v1/register/verify?token=" + verificationToken;
+        String verificationLink = "https://stockspan-12pl.onrender.com/api/v1/register/verify?token=" + verificationToken;
+        String loginRedirectLink = "https://stockspan.vercel.app/Login";
         String emailMessage = "<html>"
                 + "<body>"
                 + "<p>Dear " + user.getFirstName() + ",</p>"
