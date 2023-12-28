@@ -21,4 +21,3 @@ services:
       SPRING_DATASOURCE_PASSWORD: 42HBdgFbHF4c4AE42cABDE5B15EAgc31
     depends_on:
       - mysql
-

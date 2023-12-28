@@ -254,7 +254,6 @@ public class    OrderServiceImpl implements OrderService {
             System.out.println("No debit card found for email address: {}" + emailAddress);
             throw new NoDebitCarFoundException(NO_CARD_FOUND);
         } else {
-            // Log that a debit card was found
             System.out.println("Debit card found for email address {}: {}" + emailAddress + foundDebitCard.toString());
             return foundDebitCard;
         }

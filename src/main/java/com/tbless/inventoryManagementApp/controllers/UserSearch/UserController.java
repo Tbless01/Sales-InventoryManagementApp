@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @AllArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
     @SneakyThrows

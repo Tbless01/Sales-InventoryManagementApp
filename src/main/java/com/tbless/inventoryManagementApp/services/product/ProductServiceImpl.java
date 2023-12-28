@@ -14,6 +14,9 @@ import com.tbless.inventoryManagementApp.exceptions.UserNotFoundException;
 import com.tbless.inventoryManagementApp.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,7 +63,8 @@ public class ProductServiceImpl implements ProductService {
     public String uploadProductImage(Long productId, ProductImageRequest productImageRequest) throws ProductNotFoundException, SizeOfProductImageExceededException {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
-        if (product.getImageUrl().size() >= 20) throw new SizeOfProductImageExceededException(PRODUCT_IMAGE_SIZE_EXCEEDED);
+        if (product.getImageUrl().size() >= 20)
+            throw new SizeOfProductImageExceededException(PRODUCT_IMAGE_SIZE_EXCEEDED);
         List<String> imageUrls = product.getImageUrl();
         imageUrls.add(productImageRequest.getImageUrl());
         product.setImageUrl(imageUrls);
@@ -106,6 +110,26 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(ProductServiceImpl::buildProductResponse)
                 .toList();
+    }
+
+    public Page<ProductResponse> getAllAvailableProductsByEmailAddressWithPagination(String emailAddress, int offset, int pageSize) {
+        Page<Product> products = productRepository.findAll(PageRequest.of(offset, pageSize));
+        List<ProductResponse> productResponses = products
+                .filter(product -> !product.getEmailAddress().equals(emailAddress))
+                .map(this::buildProductPaginationResponse)
+                .toList();
+        return new PageImpl<>(productResponses, products.getPageable(), products.getTotalElements());
+    }
+
+    private ProductResponse buildProductPaginationResponse(Product product) {
+        return ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .imageUrl(product.getImageUrl())
+                .description(product.getDescription())
+                .stock(product.getStock())
+                .price(product.getPrice())
+                .build();
     }
 
     @Override

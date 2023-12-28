@@ -78,7 +78,6 @@ import com.tbless.inventoryManagementApp.data.models.Token;
 import com.tbless.inventoryManagementApp.data.models.User;
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
 import com.tbless.inventoryManagementApp.exceptions.BadNetworkException;
-import com.tbless.inventoryManagementApp.exceptions.UserLoginException;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
 import com.tbless.inventoryManagementApp.security.JwtService;
 import com.tbless.inventoryManagementApp.services.EmailJwtVerification.SendVerificationMailService;
@@ -94,8 +93,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -171,7 +168,6 @@ public class RegisterService {
     private String generateVerificationToken(User user) {
         return UUID.randomUUID().toString();
     }
-
     private void sendVerificationEmail(String emailAddress, String verificationToken) {
         // Construct a nice email message with the verification link
         var user =userService.findUserByEmailAddress(emailAddress);

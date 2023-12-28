@@ -19,6 +19,7 @@ public class LoginController {
 
     @SneakyThrows
     @PostMapping("login")
+    @ResponseBody
     public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(loginService.login(loginRequest), HttpStatus.OK);
     }
