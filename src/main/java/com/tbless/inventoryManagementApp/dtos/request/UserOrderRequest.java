@@ -1,7 +1,6 @@
 package com.tbless.inventoryManagementApp.dtos.request;
 
-import com.tbless.inventoryManagementApp.data.models.GenderType;
-import com.tbless.inventoryManagementApp.data.models.Roles;
+import com.tbless.inventoryManagementApp.data.models.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

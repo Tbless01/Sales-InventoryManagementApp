@@ -31,7 +31,7 @@ public class securityConfig {
                     auth
                             .requestMatchers("/api/v1/auth/register","/api/v1/register/user","/api/v1/register/verify", "/api/v1/auth/login", "/api/v1/verifyEmail", "/api/v1/test",
                                     "/api/v1/verifyEmail/sendOtp", "/api/v1/user/getUserDetails/**","/api/v1/user/profilePixUpdate/**", "/api/v1/product/addProduct", "/api/v1/product/getAddedProduct/**","api/v1/product/products/**",
-                                    "/api/v1/user/contact","/api/v1/product/count/**",
+                                    "/api/v1/user/contact","/api/v1/product/count/**","/api/v1/payment/initiate-payment","/api/v1/payment/verify-payment",
                                     "/api/v1/product/availableByEmail/**", "/api/v1/product/delete/**","/api/v1/product/deleteWhenZero/**", "/api/v1/product/update/**", "/api/v1/verifyEmail/sendOtp/confirmOtp",
                                     "api/v1/product/search/**","/api/v1/product/availableForOrder", "/api/v1/product/availableExceptOwnersProduct/**","/api/v1/product/searchAvailableExceptOwnersProduct/**", "/api/v1/card/addDebitCard/**",
                                     "/api/v1/orders/owner/**", "/api/v1/orders/place/**", "/api/v1/orders/customer/**", "/api/v1/card/getExistingCardDetails/**", "/api/v1/order/placeOrder/**",

@@ -1,5 +1,6 @@
 package com.tbless.inventoryManagementApp.data.models;
 
+import com.tbless.inventoryManagementApp.data.models.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

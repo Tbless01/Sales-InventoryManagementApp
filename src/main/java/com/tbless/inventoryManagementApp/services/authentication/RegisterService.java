@@ -73,9 +73,9 @@
 
 package com.tbless.inventoryManagementApp.services.authentication;
 
-import com.tbless.inventoryManagementApp.data.models.Roles;
 import com.tbless.inventoryManagementApp.data.models.Token;
 import com.tbless.inventoryManagementApp.data.models.User;
+import com.tbless.inventoryManagementApp.data.models.enums.Roles;
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
 import com.tbless.inventoryManagementApp.security.JwtService;

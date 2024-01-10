@@ -1,6 +1,6 @@
 package com.tbless.inventoryManagementApp.dtos.request;
 
-import com.tbless.inventoryManagementApp.data.models.PaymentStatus;
+import com.tbless.inventoryManagementApp.data.models.enums.PaymentStatus;
 import com.tbless.inventoryManagementApp.data.models.Product;
 import lombok.*;
 

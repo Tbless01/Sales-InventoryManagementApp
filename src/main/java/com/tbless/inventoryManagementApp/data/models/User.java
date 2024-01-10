@@ -1,5 +1,6 @@
 package com.tbless.inventoryManagementApp.data.models;
 
+import com.tbless.inventoryManagementApp.data.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,8 +27,6 @@ public class User {
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Roles> userRoles;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<DebitCardDetails> debitCardDetails;
     private boolean isEnabled = false;
     private String imageUrl;
 }

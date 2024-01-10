@@ -1,6 +1,6 @@
 package com.tbless.inventoryManagementApp.services.otpMail;
 
-import com.tbless.inventoryManagementApp.data.models.TakenStatus;
+import com.tbless.inventoryManagementApp.data.models.enums.TakenStatus;
 import com.tbless.inventoryManagementApp.data.models.VerificationToken;
 import com.tbless.inventoryManagementApp.services.verification.TokenVerificationService;
 import com.tbless.inventoryManagementApp.utils.ApiResponse;

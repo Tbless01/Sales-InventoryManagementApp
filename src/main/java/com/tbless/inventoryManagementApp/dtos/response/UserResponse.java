@@ -1,8 +1,6 @@
 package com.tbless.inventoryManagementApp.dtos.response;
 
-import com.tbless.inventoryManagementApp.data.models.GenderType;
-import com.tbless.inventoryManagementApp.data.models.Roles;
-import jakarta.persistence.*;
+import com.tbless.inventoryManagementApp.data.models.enums.Roles;
 import lombok.*;
 
 import java.util.Set;

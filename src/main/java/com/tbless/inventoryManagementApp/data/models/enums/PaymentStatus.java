@@ -1,4 +1,4 @@
-package com.tbless.inventoryManagementApp.data.models;
+package com.tbless.inventoryManagementApp.data.models.enums;
 
 public enum PaymentStatus {
     PAID("PAID"),

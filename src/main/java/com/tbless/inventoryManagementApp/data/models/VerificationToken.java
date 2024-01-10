@@ -1,6 +1,7 @@
 package com.tbless.inventoryManagementApp.data.models;
 
 
+import com.tbless.inventoryManagementApp.data.models.enums.TakenStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

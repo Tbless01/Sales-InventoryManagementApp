@@ -10,7 +10,6 @@ import com.tbless.inventoryManagementApp.exceptions.UserNotFoundException;
 import java.util.List;
 
 public interface UserService {
-
     User save(User user);
     User findUserByEmailAddress(String emailAddress);
     UserResponse findUserByEmailAddressProfile(String emailAddress);
