@@ -2,12 +2,18 @@ package com.tbless.inventoryManagementApp.services.user;
 
 import com.tbless.inventoryManagementApp.data.models.User;
 import com.tbless.inventoryManagementApp.data.repository.UserRepository;
+import com.tbless.inventoryManagementApp.dtos.request.UpdateUserPasswordRequest;
+import com.tbless.inventoryManagementApp.dtos.request.UserImageUpdateRequest;
+import com.tbless.inventoryManagementApp.dtos.response.UpdateUserPasswordResponse;
 import com.tbless.inventoryManagementApp.dtos.response.UserResponse;
+import com.tbless.inventoryManagementApp.exceptions.UserNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.tbless.inventoryManagementApp.utils.ResponseUtils.THIS_USER_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +37,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserResponse findUserByEmailAddressProfile(String emailAddress) {
+        User foundUser = userRepository.findUserByEmailAddressIgnoreCase(emailAddress).orElse(null);
+        return buildUserResponse(foundUser);
+    }
+
+    @Override
+    public long count() {
+        return userRepository.count();
+    }
+
+    @Override
     public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
@@ -38,14 +55,45 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Override
+    public String updateUserProfilePicture(String emailAddress, UserImageUpdateRequest userUpdateRequest) throws UserNotFoundException {
+        User user = userRepository.findUserByEmailAddressIgnoreCase(emailAddress)
+                .orElseThrow(() -> new UserNotFoundException(THIS_USER_NOT_FOUND));
+       String imageUrl = userUpdateRequest.getImageUrl();
+        user.setImageUrl(imageUrl);
+        userRepository.save(user);
+        return userUpdateRequest.getImageUrl();
+    }
+
+    @Override
+    public UpdateUserPasswordResponse updateUserAccount(UpdateUserPasswordRequest request) {
+//        Optional<User> userFound = userRepository.findUserByEmailAddressIgnoreCase(request.getEmail());
+//        boolean isValid = userFound.isPresent() && userFound.get().
+//                getPassword().equals(request.getOldPassword());
+//        if(isValid){
+//            userFound.get().setLoggedIn(true);
+//
+//            userFound.get().setEmail(request.getEmail());
+////            userFound.get().setUserPassword(request.getNewPassword());
+//            validateUpdatedPassword(request, userFound);
+//            usersRepo.save(userFound.get());
+//            UpdateUserPasswordResponse response = new UpdateUserPasswordResponse();
+//            response.setEmail(userFound.get().getEmail());
+//            response.setNewPassword(userFound.get().getUserPassword());
+//            return response;
+//        }
+//        throw new InvalidUserException(request.getEmail() + " not found");
+        return null;
+    }
+
     private static UserResponse buildUserResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .emailAddress(user.getEmailAddress())
-                .genderType(user.getGenderType())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
+                .imageUrl(user.getImageUrl())
                 .userRoles(user.getUserRoles())
                 .build();
     }

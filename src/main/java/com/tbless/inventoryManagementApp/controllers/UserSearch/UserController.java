@@ -1,9 +1,13 @@
 package com.tbless.inventoryManagementApp.controllers.UserSearch;
 
-import com.tbless.inventoryManagementApp.data.models.User;
+import com.tbless.inventoryManagementApp.dtos.request.UserImageUpdateRequest;
+import com.tbless.inventoryManagementApp.dtos.response.UserResponse;
+import com.tbless.inventoryManagementApp.exceptions.UserNotFoundException;
 import com.tbless.inventoryManagementApp.services.user.UserService;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,9 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @SneakyThrows
     @GetMapping("/getUserDetails/{emailAddress}")
-    public User findUserByEmailAddress(@PathVariable String emailAddress) {
-        return userService.findUserByEmailAddress(emailAddress);
+    public ResponseEntity<UserResponse> findUserByEmailAddress(@PathVariable String emailAddress) {
+        return new ResponseEntity<>(userService.findUserByEmailAddressProfile(emailAddress), HttpStatus.OK);
+    }
+
+    @PutMapping("/profilePixUpdate/{emailAddress}")
+    public ResponseEntity<String> findUserByEmailAddress(@PathVariable String emailAddress, @RequestBody UserImageUpdateRequest userUpdateRequest) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.updateUserProfilePicture(emailAddress, userUpdateRequest), HttpStatus.OK);
     }
 }

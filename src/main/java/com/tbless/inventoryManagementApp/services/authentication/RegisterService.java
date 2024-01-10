@@ -77,7 +77,6 @@ import com.tbless.inventoryManagementApp.data.models.Roles;
 import com.tbless.inventoryManagementApp.data.models.Token;
 import com.tbless.inventoryManagementApp.data.models.User;
 import com.tbless.inventoryManagementApp.dtos.request.RegistrationRequest;
-import com.tbless.inventoryManagementApp.exceptions.BadNetworkException;
 import com.tbless.inventoryManagementApp.exceptions.UserRegistrationException;
 import com.tbless.inventoryManagementApp.security.JwtService;
 import com.tbless.inventoryManagementApp.services.EmailJwtVerification.SendVerificationMailService;
@@ -91,9 +90,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -101,7 +97,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RegisterService {
-
     private final UserService userService;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
@@ -109,10 +104,7 @@ public class RegisterService {
     private final TokenService tokenService;
     private final SendVerificationMailService sendVerificationMailService;
 
-    public ApiResponse register(RegistrationRequest registrationRequest) throws UserRegistrationException , BadNetworkException {
-        if (!isInternetReachable()) {
-            throw new BadNetworkException("Bad network conditions. Unable to register. Please check your internet connection and try again.");
-        }
+    public ApiResponse register(RegistrationRequest registrationRequest) throws UserRegistrationException  {
         boolean isRegisteredUser = userService.findUserByEmailAddress(registrationRequest.getEmailAddress()) != null;
         if (isRegisteredUser) {
             throw new UserRegistrationException("User already exists");
@@ -133,20 +125,6 @@ public class RegisterService {
             return GenerateApiResponse.createdResponse("Registration successful. Please check your email for verification.");
         }
     }
-    private static boolean isInternetReachable() {
-        try {
-            URL url = new URL("https://www.google.com"); // Replace with a reliable and reachable server
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000);
-
-            int responseCode = connection.getResponseCode();
-            return responseCode == HttpURLConnection.HTTP_OK;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
 
     public boolean verifyUser(String token) {
         Token verificationToken = tokenService.findTokenByJwt(token)
@@ -170,10 +148,12 @@ public class RegisterService {
     }
     private void sendVerificationEmail(String emailAddress, String verificationToken) {
         // Construct a nice email message with the verification link
-        var user =userService.findUserByEmailAddress(emailAddress);
+        User user = userService.findUserByEmailAddress(emailAddress);
 //        String verificationLink = "http://localhost:8080/api/v1/register/verify?token=" + verificationToken;
-        String verificationLink = "https://stockspan-12pl.onrender.com/api/v1/register/verify?token=" + verificationToken;
-        String loginRedirectLink = "https://stockspan.vercel.app/Login";
+//        String verificationLink = "https://stockspan-12pl.onrender.com/api/v1/register/verify?token=" + verificationToken;
+//        String loginRedirectLink = "https://stockspan.vercel.app/Login";
+        String verificationLink = "http://localhost:8080/api/v1/register/verify?token=" + verificationToken;
+        String loginRedirectLink = "http://localhost:3000/Login";
         String emailMessage = "<html>"
                 + "<body>"
                 + "<p>Dear " + user.getFirstName() + ",</p>"
@@ -186,7 +166,6 @@ public class RegisterService {
                 + "</body>"
                 + "</html>";
 
-        // Send the email using the custom email service
         sendVerificationMailService.sendVerificationEmail(emailAddress, "Account Verification - StockSpan", emailMessage);
     }
 
@@ -199,7 +178,6 @@ public class RegisterService {
                 .lastName(registrationRequest.getLastName())
                 .phoneNumber(registrationRequest.getPhoneNumber())
                 .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                .genderType(registrationRequest.getGenderType())
                 .userRoles(userRoles)
                 .build();
     }

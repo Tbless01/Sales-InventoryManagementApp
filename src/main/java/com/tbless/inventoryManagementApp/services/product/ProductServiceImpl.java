@@ -17,10 +17,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.tbless.inventoryManagementApp.utils.ExceptionUtils.*;
 import static com.tbless.inventoryManagementApp.utils.ResponseUtils.*;
@@ -104,6 +106,14 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+    public List<ProductResponse> searchAllAvailableProductsExceptOwnerProduct(String emailAddress, String keyword) {
+        List<Product> products = productRepository.searchAllByNameContainingIgnoreCase(keyword);
+        return products.stream()
+                .filter(product-> !product.getEmailAddress().equals(emailAddress))
+                .map(ProductServiceImpl::buildProductResponse)
+                .toList();
+    }
+
     @Override
     public List<ProductResponse> getAllAvailableProductsByEmailAddress(String emailAddress) {
         List<Product> products = productRepository.findByEmailAddressIgnoreCase(emailAddress);
@@ -111,15 +121,41 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductServiceImpl::buildProductResponse)
                 .toList();
     }
-
-    public Page<ProductResponse> getAllAvailableProductsByEmailAddressWithPagination(String emailAddress, int offset, int pageSize) {
-        Page<Product> products = productRepository.findAll(PageRequest.of(offset, pageSize));
-        List<ProductResponse> productResponses = products
-                .filter(product -> !product.getEmailAddress().equals(emailAddress))
-                .map(this::buildProductPaginationResponse)
+    @Override
+    public List<ProductResponse> searchProductsByNameOrEmailAddress(String emailAddress, String keyword){
+        List<Product> products = productRepository.searchAllByEmailAddressContainingIgnoreCaseAndNameContainingIgnoreCase(emailAddress,keyword);
+//        List<Product> products = productRepository.searchAllByNameContainingIgnoreCase(keyword);
+        return products.stream()
+                .map(ProductServiceImpl::buildProductResponse)
                 .toList();
-        return new PageImpl<>(productResponses, products.getPageable(), products.getTotalElements());
     }
+    @Override
+   public Long countNumberOfProductsByEmail(String emailAddress){
+        return productRepository.countProductByEmailAddress(emailAddress);
+    }
+
+
+    public Page<ProductResponse> getAllAvailableProductsByEmailAddressWithPagination(String emailAddress, int pageNumber, int pageSize) {
+//        Page<Product> products = productRepository.findAll(PageRequest.of(pageNumber, pageSize));
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Product> productsPage = productRepository.findAllByEmailAddress(emailAddress, pageable);
+
+//        List<ProductResponse> productResponses = products
+//                .getContent()
+//                .stream()
+//                .filter(product -> product.getEmailAddress().equals(emailAddress))
+//                .map(this::buildProductPaginationResponse)
+//                .collect(Collectors.toList());
+//        return new PageImpl<>(productResponses, products.getPageable(), products.getTotalElements());
+
+        List<ProductResponse> productResponses = productsPage.getContent().stream()
+                .map(this::buildProductPaginationResponse)
+                .collect(Collectors.toList());
+        return new PageImpl<>(productResponses, pageable, productsPage.getTotalElements());
+    }
+
+
 
     private ProductResponse buildProductPaginationResponse(Product product) {
         return ProductResponse.builder()

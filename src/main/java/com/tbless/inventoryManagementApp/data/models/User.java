@@ -26,10 +26,8 @@ public class User {
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Roles> userRoles;
-//    @Enumerated(EnumType.STRING)
-//    private GenderType genderType;
-    private String genderType;
     @OneToMany(fetch = FetchType.EAGER)
     private List<DebitCardDetails> debitCardDetails;
     private boolean isEnabled = false;
+    private String imageUrl;
 }

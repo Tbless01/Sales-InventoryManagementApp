@@ -2,6 +2,7 @@ package com.tbless.inventoryManagementApp.utils;
 
 public class ResponseUtils {
     public static final String USER_REGISTRATION_SUCCESSFUL = "User Registration Successful";
+    public static final String THIS_USER_NOT_FOUND = "User Not Found";
     public static final String PRODUCT_DELETED_SUCCESSFULLY="Product Deleted Successfully";
     public static final String ORDER_DELETED_SUCCESSFULLY="Order Successfully Deleted";
     public static final String PRODUCT_NOT_FOUND= "Product not found";

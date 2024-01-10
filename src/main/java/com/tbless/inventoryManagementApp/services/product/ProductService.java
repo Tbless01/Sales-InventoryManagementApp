@@ -23,7 +23,7 @@ public interface ProductService {
     String uploadProductImage(Long productId, ProductImageRequest productImageRequest) throws ProductNotFoundException, SizeOfProductImageExceededException;
 
     ProductResponse getProductById(Long id) throws ProductNotFoundException;
-
+    Long countNumberOfProductsByEmail(String emailAddress);
     ProductResponse getProductByName(String productName) throws ProductNotFoundException;
 
     Product findProductByName(String productName) throws ProductNotFoundException;
@@ -34,7 +34,11 @@ public interface ProductService {
 
     Page<ProductResponse> getAllAvailableProductsByEmailAddressWithPagination(String emailAddress, int offset, int pageSize);
 
+    List<ProductResponse> searchProductsByNameOrEmailAddress(String emailAddress, String keyword);
+
     List<ProductResponse> getAllAvailableProductsExceptOwnerProduct(String emailAddress);
+
+    List<ProductResponse> searchAllAvailableProductsExceptOwnerProduct(String emailAddress, String keyword);
 
     DeleteResponse deleteProduct(Long id);
 

@@ -23,7 +23,6 @@ public class SendVerificationMailServiceImpl implements SendVerificationMailServ
 
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            // Handle exception appropriately (log or throw a custom exception)
             e.printStackTrace();
         }
     }

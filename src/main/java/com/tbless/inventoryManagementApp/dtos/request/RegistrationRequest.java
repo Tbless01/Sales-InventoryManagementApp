@@ -19,8 +19,7 @@ public class RegistrationRequest {
     private String firstName;
     private String lastName;
     private String password;
-//    private Set<Roles> userRole;
     private String userRole;
     private String phoneNumber;
-    private String genderType;
+    private String imageUrl;
 }

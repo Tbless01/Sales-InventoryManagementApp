@@ -20,5 +20,4 @@ public class UserOrderRequest {
     private String lastName;
     private String phoneNumber;
     private Set<Roles> roles;
-    private GenderType genderType;
 }
